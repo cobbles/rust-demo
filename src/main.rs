@@ -1,4 +1,3 @@
-extern crate rand;
 use crossterm::{
     event::{
         self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEvent, KeyModifiers,
@@ -102,14 +101,14 @@ fn run_app<B: Backend>(
 
 fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     let chunks = Layout::default()
-        .direction(Direction::Horizontal)
+        .direction(Direction::Vertical)
         .margin(1)
         .constraints(
             [
-                Constraint::Percentage(50),
-                Constraint::Percentage(50),
-                Constraint::Percentage(50),
-                Constraint::Percentage(50),
+                Constraint::Percentage(5),
+                Constraint::Percentage(5),
+                Constraint::Percentage(5),
+                Constraint::Percentage(5),
             ]
             .as_ref(),
         )
