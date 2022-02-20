@@ -86,8 +86,8 @@ fn run_app<B: Backend>(
             .checked_sub(last_tick.elapsed())
             .unwrap_or_else(|| Duration::from_secs(0));
         if crossterm::event::poll(timeout)? {
-            if let Event::Key(KeyEvent { code, modifiers }) = event::read()? {
-                if modifiers == KeyModifiers::CONTROL && KeyCode::Char('c') == code {
+            if let Event::Key(key)= event::read()? {
+                if KeyCode::Char('q') == key.code {
                     return Ok(());
                 }
             }
