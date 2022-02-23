@@ -1,6 +1,8 @@
 pub struct App {
-    pub node1: u16,
-    pub node2: u16,
-    pub node3: u16,
-    pub node4: u16,
+    pub nodes: Vec<Node>,
+}
+
+pub struct Node {
+    pub name: String,
+    pub cpu_percentage: u16
 }

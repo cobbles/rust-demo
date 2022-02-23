@@ -1,55 +1,27 @@
 use tui::{
     backend::{Backend},
     layout::{Constraint, Direction, Layout},
-    style::{Color, Style},
-    widgets::{Block, Borders, Gauge},
     Frame,
 };
 
 use crate::types;
 
+use self::cpu_guage::render_guages;
+
+mod cpu_guage;
+
 pub fn ui<B: Backend>(f: &mut Frame<B>, app: &types::App) {
     let chunks = Layout::default()
-        .direction(Direction::Vertical)
-        .margin(1)
-        .constraints(
-            [
-                Constraint::Percentage(5),
-                Constraint::Percentage(5),
-                Constraint::Percentage(5),
-                Constraint::Percentage(5),
-            ]
-            .as_ref(),
-        )
-        .split(f.size());
-
-    let gauge = Gauge::default()
-        .block(
-            Block::default()
-                .title("node-10-10-0-1")
-                .borders(Borders::LEFT | Borders::RIGHT),
-        )
-        .gauge_style(Style::default().fg(Color::Yellow))
-        .percent(app.node1);
-    f.render_widget(gauge, chunks[0]);
-
-    let gauge = Gauge::default()
-        .block(
-            Block::default()
-                .title("node-10-10-0-2")
-                .borders(Borders::LEFT | Borders::RIGHT),
-        )
-        .gauge_style(Style::default().fg(Color::Yellow))
-        .percent(app.node2);
-    f.render_widget(gauge, chunks[1]);
-
-    let gauge = Gauge::default()
-        .block(
-            Block::default()
-                .title("node-10-10-0-3")
-                .borders(Borders::LEFT | Borders::RIGHT),
-        )
-        .gauge_style(Style::default().fg(Color::Yellow))
-        .percent(app.node3);
-    f.render_widget(gauge, chunks[2]);
+    .direction(Direction::Horizontal)
+    .margin(0)
+    .constraints(
+        [
+            Constraint::Percentage(50),
+            Constraint::Percentage(50),
+        ]
+        .as_ref(),
+    )
+    .split(f.size());
+    render_guages(f, app, chunks[0]);
+    render_guages(f, app, chunks[1]);
 }

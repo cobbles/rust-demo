@@ -6,6 +6,7 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use rand::{thread_rng, Rng};
+use types::Node;
 use std::{
     error::Error,
     io,
@@ -21,19 +22,23 @@ mod types;
 
 impl types::App {
     fn new() -> types::App {
+        let mut nodes = Vec::new();
+        nodes.push(Node{
+            name: "node-1-1-1".to_string(),
+            cpu_percentage: 0,
+        });
+        nodes.push(Node{
+            name: "node-1-1-2".to_string(),
+            cpu_percentage: 0,
+        });
         types::App {
-            node1: 0,
-            node2: 0,
-            node3: 0,
-            node4: 0,
+            nodes: nodes
         }
     }
 
     fn on_tick(&mut self) {
-        self.node1 = thread_rng().gen_range(0..100);
-        self.node2 = thread_rng().gen_range(0..100);
-        self.node3 = thread_rng().gen_range(0..100);
-        self.node4 = thread_rng().gen_range(0..100);
+        self.nodes[0].cpu_percentage = thread_rng().gen_range(0..100);
+        self.nodes[1].cpu_percentage = thread_rng().gen_range(0..100);
     }
 }
 
