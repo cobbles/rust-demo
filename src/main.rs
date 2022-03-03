@@ -1,12 +1,9 @@
 use crossterm::{
-    event::{
-        self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode,
-    },
+    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use rand::{thread_rng, Rng};
-use types::Node;
 use std::{
     error::Error,
     io,
@@ -16,24 +13,24 @@ use tui::{
     backend::{Backend, CrosstermBackend},
     Terminal,
 };
+use types::Node;
 
-mod ui;
+mod api;
 mod types;
+mod ui;
 
 impl types::App {
     fn new() -> types::App {
         let mut nodes = Vec::new();
-        nodes.push(Node{
+        nodes.push(Node {
             name: "node-1-1-1".to_string(),
             cpu_percentage: 0,
         });
-        nodes.push(Node{
+        nodes.push(Node {
             name: "node-1-1-2".to_string(),
             cpu_percentage: 0,
         });
-        types::App {
-            nodes: nodes
-        }
+        types::App { nodes: nodes }
     }
 
     fn on_tick(&mut self) {
@@ -42,7 +39,9 @@ impl types::App {
     }
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    api::node_count().await?;
     // setup terminal
     enable_raw_mode()?;
     let mut stdout = io::stdout();
@@ -84,7 +83,7 @@ fn run_app<B: Backend>(
             .checked_sub(last_tick.elapsed())
             .unwrap_or_else(|| Duration::from_secs(0));
         if crossterm::event::poll(timeout)? {
-            if let Event::Key(key)= event::read()? {
+            if let Event::Key(key) = event::read()? {
                 if KeyCode::Char('q') == key.code {
                     return Ok(());
                 }
