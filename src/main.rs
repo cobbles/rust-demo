@@ -3,6 +3,7 @@ use crossterm::{
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
+use kube::Client;
 use rand::{thread_rng, Rng};
 use std::{
     error::Error,
@@ -18,6 +19,7 @@ use types::Node;
 mod api;
 mod types;
 mod ui;
+mod pod;
 
 impl types::App {
     fn new() -> types::App {
@@ -41,7 +43,9 @@ impl types::App {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    let client = Client::try_default().await?;
     api::node_count().await?;
+    api::pods(client).await?;
     // setup terminal
     enable_raw_mode()?;
     let mut stdout = io::stdout();

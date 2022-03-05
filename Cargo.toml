@@ -13,3 +13,4 @@ kube = { version = "0.65.0", features = ["runtime", "derive"] }
 rand = "0.8.4"
 tokio = { version = "1.15.0", features = ["full"] }
 tui = "0.17.0"
+serde = "1.0.136"
